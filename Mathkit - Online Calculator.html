@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<!-- saved from url=(0023)https://mathkit.online/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="mathkit: free online calculators.">
+<title>Mathkit - Online Calculator</title>
+<!-- mathkit's own icon (favicon2.ico), embedded so it only exists on the mathkit deployment -->
+<style>
+:root{
+  --text:#222; --muted:#666; --border:#d8d8d0; --line:#e6e6df; --accent:#2b5aa8; --link:#1f4f9e;
+  --surface-2:#fbfbf8; --mono:"Courier New",Courier,monospace;
+  --serif:Georgia,"Times New Roman",Times,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#fff;color:var(--text);font:16px/1.5 var(--serif);min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--link)}
+button{font:inherit;color:inherit}
+.muted{color:var(--muted)} .small{font-size:14px} .mono{font-family:var(--mono)}
+.wrap{width:100%;max-width:820px;margin:0 auto;padding:0 18px}
+
+header{border-bottom:1px solid var(--border);background:#fff}
+.brand{display:inline-block;margin-top:16px;font-size:26px;font-weight:bold;color:var(--text);text-decoration:none;letter-spacing:-.01em}
+.brand i{font-weight:normal;color:var(--accent)}
+.nav{display:flex;flex-wrap:wrap;gap:4px 18px;padding:6px 0 12px;font-size:15px}
+.nav a{text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav a.active{color:var(--text);font-weight:bold}
+main.wrap{flex:1;padding-top:24px;padding-bottom:48px}
+footer{border-top:1px solid var(--border);padding:16px 0;color:var(--muted);font-size:14px}
+
+.page-head{margin-bottom:16px}
+.page-head h1{font-size:25px;font-weight:normal;margin:0}
+.page-head p{margin:2px 0 0;color:var(--muted)}
+.panel{border:1px solid var(--border);padding:18px 20px;background:#fff}
+.panel.mt{margin-top:18px}
+.sec{font-size:18px;font-weight:normal;margin:24px 0 10px}
+.sec.first{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px 16px}
+.field label{display:block;font-size:14px;color:#444;margin-bottom:3px}
+input,select{width:100%;font:inherit;font-size:16px;color:var(--text);background:#fff;border:1px solid #b5b5ad;border-radius:2px;padding:6px 8px;min-height:36px}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px #d6e1f5}
+input[type=checkbox]{width:16px;height:16px;min-height:0;margin:0;accent-color:var(--accent)}
+.check{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:15px;cursor:pointer}
+.btn,.icon-btn{font:inherit;font-size:15px;background:#f4f4f0;border:1px solid #b5b5ad;border-radius:2px;padding:5px 12px;cursor:pointer;min-height:36px;color:var(--text)}
+.btn:hover,.icon-btn:hover{background:#eaeae4}
+.icon-btn{padding:0;width:36px;line-height:1}
+.result{margin-top:18px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--line)}
+.result .k{font-size:14px;color:var(--muted)}
+.big{font-size:28px;line-height:1.25;margin-top:2px;overflow-wrap:anywhere}
+.sub{margin-top:2px;font-size:14px}
+.err{color:#b3261e!important}
+.big.err{font-size:18px}
+.stats{margin-top:12px;border-top:1px solid var(--line)}
+.stats:empty{display:none}
+.stat{display:flex;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px}
+.stat .sk{color:#555}
+.stat .sv{text-align:right;overflow-wrap:anywhere}
+.pills{display:flex;flex-wrap:wrap;gap:4px 16px;margin-bottom:16px;font-size:15px}
+.pill{background:none;border:none;padding:0;color:var(--link);cursor:pointer;font:inherit;font-size:15px}
+.pill:hover{text-decoration:underline}
+.pill.on{color:var(--text);font-weight:bold;text-decoration:none}
+.tag{color:var(--muted);font-size:13px;font-weight:normal}
+
+/* Scientific */
+.sci{max-width:430px}
+.display{border:1px solid #b5b5ad;background:#fff;padding:6px 10px 8px}
+.disp-bar{display:flex;justify-content:space-between;font-size:13px}
+.chip{background:none;border:none;padding:0;color:var(--link);cursor:pointer;font-size:13px}
+.chip:hover{text-decoration:underline}
+.topline{font-size:14px;color:var(--muted);text-align:right;min-height:21px;overflow-wrap:anywhere}
+.expr{border:none!important;box-shadow:none!important;padding:0;font-size:30px;text-align:right;min-height:40px}
+.preview{font-size:14px;color:var(--muted);text-align:right;min-height:21px}
+.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.key{border:1px solid #bdbdb5;background:#f7f7f3;border-radius:3px;padding:10px 0;font-size:17px;cursor:pointer}
+.key:hover{background:#ecece6}
+.key:active{background:#e2e2db}
+.key.fn{font-size:15px;background:#fff}
+.key.op{background:#efefe9}
+.key.clr{color:#b3261e}
+.key.eq{background:var(--accent);border-color:#234b8e;color:#fff}
+.key.eq:hover{background:#244d91}
+.hist{margin-top:16px}
+.hist h3{font-size:15px;font-weight:normal;color:var(--muted);margin:0 0 4px}
+.hist-list{max-height:220px;overflow:auto;border-top:1px solid var(--line)}
+.hitem{display:flex;justify-content:space-between;gap:12px;width:100%;text-align:left;border:none;border-bottom:1px solid var(--line);background:none;padding:5px 2px;cursor:pointer;font-size:15px}
+.hitem:hover{background:var(--surface-2)}
+.hitem .he{color:var(--muted);overflow-wrap:anywhere}
+.tip{margin:12px 0 0}
+
+/* Fractions */
+.frac-row{display:grid;grid-template-columns:1fr 130px 1fr;gap:12px;align-items:end}
+.frac-out{display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;font-size:26px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15}
+.fr .n{border-bottom:2px solid currentColor;padding:0 5px 1px}
+.fr .d{padding:1px 5px 0}
+.work{font-size:15px;color:var(--muted);margin-top:10px;overflow-wrap:anywhere}
+
+/* Units */
+.conv{display:grid;grid-template-columns:1fr 1fr auto 1fr;gap:10px;align-items:end}
+.table{border-top:1px solid var(--line)}
+.trow{display:flex;justify-content:space-between;gap:12px;width:100%;padding:6px 2px;border:none;border-bottom:1px solid var(--line);background:none;cursor:pointer;font-size:15px;text-align:left}
+.trow:hover{background:var(--surface-2)}
+.trow.on{font-weight:bold}
+.trow .mono{font-family:inherit;text-align:right;overflow-wrap:anywhere}
+
+/* Quadratic */
+.plot{width:100%;height:280px;display:block;border:1px solid var(--line);margin-top:18px;background:#fff}
+.eq-show{font-size:17px;margin-top:2px}
+
+/* Time zones */
+.tz-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.tz-actions select{flex:1;min-width:200px}
+.tz-list{margin-top:16px;border-top:1px solid var(--line)}
+.tz-row{display:grid;grid-template-columns:minmax(0,1fr) auto 36px;gap:12px;align-items:center;padding:9px 2px;border-bottom:1px solid var(--line)}
+.tz-row.src{background:var(--surface-2)}
+.tz-right{text-align:right}
+.tz-time{font-size:20px}
+
+/* GPA */
+.gpa-row{display:grid;grid-template-columns:minmax(0,1.6fr) 80px minmax(0,1fr) minmax(0,1fr) 36px;gap:8px;align-items:center;margin-bottom:8px}
+.gpa-head{font-size:14px;color:#444;margin-bottom:3px}
+
+/* Fuel / dates */
+.money{display:grid;grid-template-columns:70px 1fr;gap:8px}
+.add-row{display:grid;grid-template-columns:1.4fr 110px 1fr 1fr;gap:12px;align-items:end}
+
+@media (max-width:600px){
+  main.wrap{padding-top:18px;padding-bottom:40px}
+  .wrap{padding:0 14px}
+  .panel{padding:14px}
+  .frac-row{grid-template-columns:1fr}
+  .conv{grid-template-columns:1fr auto 1fr}
+  .conv .field:first-child{grid-column:1/-1}
+  .add-row{grid-template-columns:1fr 1fr}
+  .gpa-head{display:none}
+  .gpa-row{grid-template-columns:1fr 1fr 36px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+  .gpa-row .gname{grid-column:1/3;grid-row:1}
+  .gpa-row .gdel{grid-column:3/4;grid-row:1}
+  .gpa-row .gcr{grid-column:1/2}
+  .gpa-row .gg{grid-column:2/4}
+  .gpa-row .gt{grid-column:1/4}
+  .tz-time{font-size:17px}
+}
+</style>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,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CP+TRgf/lkwO/5hRFf+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+XTxL/mFMZ/6JjLf+hYiz/oWIs/6FhLP+hYSz/oWIs/6FhK/+hYSz/oGIr/6BfKP+ZVx7/39LF//r9//+lazn/nVsh/6FiK/+hYSv/oWEr/6FiK/+hYSv/oWEs/6FhLP+hYiv/nlwk/6FkL//z9fT/49rQ/5pYH/+fXyf/oWIr/6FhLP+hYiz/oWEs/6FiK/+hYSz/oWIs/6FiLP+iYy7/mVQZ/5dPEv+YUBT/mFAU/5hQFP+YUBT/mFAU/5dOEf+PQQD/08Cr///////9/////f////3////9/////f////3////9/////f////3////+////9vf5//Tz8//9/////f////3////9/////f////3////9/////f////3////9/////f////3////09PT/9vf4//3////9/////f////3////9/////f////3////9/////f////7/////////1cKv/49CAf+XThH/mFAU/5hQFP+YUBT/mFAU/5hPE/+SRgf/upJt/9/Rw//ax7f/2se2/9rHtv/ax7b/2ca2/9nHtv/Zx7b/2ca2/9nGtf/XxLH/7erm//b3+P/byrr/2MWz/9rGtv/ax7b/2se2/9rHtf/ax7b/2se2/9rHtv/ax7b/2cWz/9nIt//09PT/7+zp/9jEsv/ZxrX/2ce1/9nHtf/Zx7b/2sa1/9rGtv/ax7b/2ce2/9nHtv/f0MP/u5Rx/5FGB/+YTxP/mFAU/5hQFP+YUBT/mFAU/5hQFP+ZURX/kkYH/49CAf+QQwL/kEMD/5BDAv+QQwL/kEMC/5BDA/+QQwL/kEMC/49AAP+HNwD/28y9//r+//+UTxT/izsA/5BDAv+QQwP/kEMC/5BDAv+QQwP/kEMD/5BDAv+QQwP/jTwA/49GB//z9fT/4dTI/4g5AP+OQAD/j0MD/5BDA/+QQwL/kEMC/5BDAv+QQwL/kEMC/49DA/+PQgH/kkYH/5lRFf+YUBT/mFAU/5hQE/+YUBT/mFAU/5hQFP+YUBT/mE8T/5dOEf+XThH/l04R/5ZND/+XThH/l04S/5dNEP+XTRD/l04S/5ZLDv+PQgH/3M7A//n+//+bWSH/k0YG/5dOEf+XThH/l04R/5dOEf+XThH/l04R/5dO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FP+YUBT/mFAU/5hQFL+XThKAmFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5dPEv+SRgb/xaWG/9vNvf+XUhf/lkwO/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/lk0P/5VNEP/WxLL/yayR/5JGB/+XThL/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5dQFEAAAAAAmE8T/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFf+YURX/kkcI/5FFBP+XTxL/mFEV/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAV/5hPE/+RRQX/kkcH/5hQFf+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mE8TvwAAAAAAAAAAj0ICgJhQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQE/+YUBP/mFAT/5hQFP+YUBX/l04S/5dNEP+YUBT/mFAU/5hQFP+YUBT/mFAT/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+XThH/l04R/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBP/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/j0QAQAAAAAAAAAAAAAAAAI9EAECYTxO/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAT/5hREv+YURL/mFES/5hREv+YURL/mFAT/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFES/5hQE/+YUBT/mFAU/5hQE/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQE/+YURL/mFET/5hREv+YURL/mFAT/5hREv+YURL/mFAT/5hQFP+YUBT/mFAV/5hPE/+PQgKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAl1AUQJhQFL+YUBS/mFAU/5hQFP+YUBP/mFES/5hREv+YURL/mFAT/5hQE/+YUBP/mFAT/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YURL/mFAT/5hQFP+YUBP/mFES/5hREv+YUBP/mFAU/5hQE/+YUBT/mFAU/5hQFL+XUBSAl1AQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAQAAAAIAAAAABACAAAAAAAABCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAl1AUgJlSFoCaURW/mlEVv5lRFf+ZURX/mFAU/5hQFf+ZURX/mVEV/5hRFf+YURX/mVEV/5lRFf+ZURX/mVEV/5pSFv+ZURX/l1EV/5lRFf+YUBT/mFAU/5hQFP+ZURX/mVEV/5lRFf+ZURX/mVEV/5lRFf+ZURX/mVEV/5lRFf+ZURX/mFEV/5hRFf+ZURX/mFAU/5lRFf+ZURX/mFEV/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5lRFf+YURX/mlEVv5pRFb+XUBSAl1AUQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACXThKAmFAU/5hQFP+YUBT/mVEV/5hQFP+YUBT/mFAU/5lRFf+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+ZURX/mFAU/5hQFP+YUBT/l04SgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJNEBECYUBW/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+ZURX/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mVEV/5lRFf+YUBT/mFAU/5hQFP+YUBW/k0QEQAAAAAAAAAAAAAAAAAAAAACYUBW/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFb8AAAAAAAAAAAAAAACXThKAmFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFEV/5dOEv+PQQD/kUQD/5hQFP+YUBX/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5lRFf+SRQX/j0AA/5dNEP+ZURX/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/l04SgAAAAAAAAAAAmFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5dOEf+XURX/upFr/7GAVP+VSw7/mE8T/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hPE/+VSgz/rHhL/72Vcf+ZVRr/l00Q/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP8AAAAAl1AUQJhQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hPFP+RQwL/r3xO///////4/f7/mlkf/5RICv+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+VSw3/lU4R/+7u6f//////tYdf/49BAP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/l1AUgJdQFICYUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/kEIB/7KDWf//////9vj5/51eJ/+TSAj/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/lUoM/5ZSF//u7ej//////7iNZv+PQQD/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5dQFICYUBS/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAT/5VLDP+YTxL/mVEV/5ZMD/+XTRD/mVEV/5dND/+WSw3/mFAU/5hQFP+YUBT/mFAU/5BDAv+xgFb///////T19P+cXSX/lEgJ/5hQFP+YUBT/mVEV/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mVEV/5VL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E/+YTxP/mE8T/5hQE/+YUBP/mFAT/5hPE/+YTxP/mFAT/5hQE/+YTxP/kEIB/7CAVv//////9PT0/5tcJv+TRwj/mE8T/5hQE/+YTxT/mE8T/5hQE/+YUBP/mE8U/5hQE/+YTxP/mFAT/5hPE/+YTxP/lUoL/5ZRFv/s6eT//////7aKY/+QQQD/mE8T/5hQE/+YUBP/mFAT/5hQE/+YTxP/mFAT/5hQE/+YUBP/mE8T/5hQE/+YUBP/mE8T/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFEV/5hPEv+QQgH/j0AA/49BAP+PQQD/j0AB/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/4YyAP+qdkj///////T09f+TTxT/ijgA/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/4w7AP+NQgP/6+ji//////+wgFb/hjEA/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/49BAP+PQQD/j0EA/49AAP+QQgH/mE8S/5hRFf+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5dOEf+WUBP/tYtj/76ad/+8lnL/vJZy/72Vcv+9lXL/vJZy/72Wcv+8lnL/vJZx/72Vcv+8lnL/vJVy/7yVcv+3jmj/ybGY//v////09fX/v519/7mRbP+8lnL/vJZy/7yWcv+9lXH/vJVy/7yVcv+8lnL/vJVx/7yWcv+8lnL/vJZy/7yWcf+7km3/u5Zz/+/u6//8////zbWf/7iNZv+9lnH/vJZy/72Wcf+8lXH/vJVy/7yWcv+9lnH/vZVy/7yVcv+8lnL/vJVy/7yWcv+/mnf/topi/5VPE/+XThH/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+RQwL/q3hK//////////////////////////////////////////////////////////////////////////////////3////z8vH/9fX0///////////////////////////////////////////////////////////////////////////////////////29vf/8/Lx//3///////////////////////////////////////////////////////////////////////////////////+qeEr/kUMC/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/k0YH/6JoNP/x8e3/9vj3//Py8f/z8vD/8/Pw//Py8P/z8vH/9PPx//Pz8f/z8/H/8/Pw//Pz8P/08vD/8/Lw//Py8P/08/L/9PT0//T09P/09PH/8/Lw//Py8P/z8vD/8/Px//Pz8P/z8vD/9PPw//Tz8f/z8/D/8/Lw//Py8P/08vD/8/Lw//Py8P/08/H/9fT0//X19f/09PL/8/Pw//Py8P/z8vD/8/Pw//Tz8f/08/H/9PPw//Tz8f/z8/H/9PLw//Py8f/z8vD/9PLw//b39//w8e7/omg1/5NGB/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hRFf+VSw7/l1Qa/5xcJf+bWyP/m1sj/5xbI/+bWyP/m1oj/5xaI/+bWiP/m1sj/5tbIv+bWyP/nFoj/5xaI/+UTxL/solh//7////19fX/oGc0/5dTGP+bWyP/m1oj/5taI/+bWiP/m1sj/5xbI/+cWiP/nFsj/5tbI/+bWyP/nFsj/5xaI/+ZVRv/mlwm/+3q5f//////uJBs/5NNEf+bWiL/nFsj/5xaI/+bWiP/nFsj/5tbIv+bWiP/nFsj/5xbI/+cWyP/nFsj/5xaI/+dXCX/mFUZ/5VMDv+ZURX/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5VKC/+USAn/lEgK/5RICv+USAr/lEgK/5RICv+USAr/lEgK/5RICf+USAr/lEgK/5RICv+USAn/jDoA/6x8Tv//////9fX1/5hWHP+PQAD/lEkK/5RICv+USAr/lEgK/5RICv+USAr/lEgK/5RICv+USAn/lEgK/5RICv+USAr/kUIC/5JKDP/s6eP//////7OEXP+LOQD/lEgJ/5RJCv+USAr/lEgK/5RICv+USQr/lEgK/5RICv+USAr/lEgK/5RICv+USAr/lEgJ/5VJC/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQ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/P/5+/z/+fv8//j7/P/4+/z/+Pv9//f5+v/08/P/9PT0//n6/P/4+/3/+Pv8//j7/P/5+/z/+Pv8//j7/P/4+/3/+Pv9//j7/P/4+/z/+Pv8//n7/P/4+/z/+Pv8//j7/P/09fX/9PPz//f4+v/4+/3/+Pv8//j7/f/4+/3/+Pv9//j7/f/4+/z/+Pv9//j7/P/5+/z/+fv8//j7/P/4+/3/+/////n+//+lbj3/kkUF/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/kkQE/6dxQf/+//////////3////9/////f////3////9/////f////3////9/////f////3////9/////f////7////7////8/Ly//T09P/9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9////9fX2//Py8v/6/v///v////3////9/////f////3////9/////f////3////9/////f////3////9/////f//////////////p3RG/5FEA/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQE/+VTA//pW47/617Tv+sd0r/rHdK/6x3Sv+seEr/rHdK/6x3Sv+sd0r/q3dJ/6t3Sv+sd0r/rHdK/6t3Sf+lbTz/vpx8//3////19PX/r4FX/6hyQv+sd0r/rHdK/6x3Sv+seEr/rHhJ/6x3Sv+sd0r/rHdK/6x4Sv+sd0n/rHdK/6x3Sv+qc0T/qnhL/+7r5//+////wqKF/6VtO/+sd0r/rHdJ/6t3Sf+sd0r/rHdK/6x3Sf+sd0n/rHdK/6x3Sv+reEr/q3dK/6t3Sf+tek3/p28+/5RNEP+YTxP/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBX/mE8T/5JFBf+RQwL/kUQD/5FEA/+RRAP/kUQD/5FEA/+RRAP/kUQD/5FEA/+RRAP/kUQD/5FEA/+RQwP/iDUA/6p4S///////9PT0/5RRF/+MOwD/kUQE/5FEA/+RRAP/kUQD/5FEA/+RRAP/kUQD/5FEA/+RRAP/kUQD/5FEA/+RRAP/jj0A/49FBf/r6OL//////7GCWP+HNAD/kUMD/5FEA/+QRAP/kUQD/5FEA/+RRAP/kUQD/5FEA/+RRAP/kUQD/5FEA/+RRAP/kUMD/5JFBf+YTxP/mFEV/5hQFP+YUBT/mFAU/5hQE/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+ZUBT/mFAU/5BDAv+ugFb///////T09P+cXCb/lEgJ/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5VKDP+WURb/7Onj//////+1imP/j0IA/5hQFP+YUBT/mFAU/5hQFP+YUBT/mE8T/5dOEv+YUBP/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mVEV/5hPEv+WTQ//mFAU/5hQFP+ZURX/l04R/5dNEP+YUBX/mVEV/5hQFP+QQwL/sIBW///////09fX/m10m/5RICf+YUBT/mFAU/5lRFf+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+VSgz/llEW/+vp4///////tYpi/5BCAf+YUBT/mFAU/5lRFf+YUBT/mVEW/5NICv+OQAD/l00Q/5lRFv+YUBT/mFAU/5lRFf+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+TSAn/kUcI/5VKDP+ZUhX/l00Q/5FHB/+RRwn/mE8S/5hRFf+YUBT/kUMC/7GAVv//////8/X1/5tdJv+USAn/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/lUoM/5ZRFv/r6eP//////7aJYv+QQgH/mFAU/5hQFP+YUBT/mFAT/5JGB/+yhFv/2cWz/6JoNP+USQr/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hPEv+SRgf/w6GC/9/Txf+RSw//kUEB/4w+AP/Ms5z/1sWy/5NMD/+XTRD/mFAU/5BDAv+xgFf///////P09f+bXCb/lEgJ/5hQFP+YUBT/mFAU/5hPE/+YUBP/mE8T/5hPE/+YTxP/mFAT/5hQE/+YUBT/mFAU/5VKDP+WUhb/7Onj//////+2iWP/j0IB/5hQFP+YUBT/mE8U/5hOEv+OPwD/yq+U//////+se1D/kEIB/5hPE/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+XThH/kUQE/821nf//////3c/A/4pEDf/Ep4r//////+Pd0/+TThL/lksN/5hQFP+QQwL/sIFW///////z9PX/nFwm/5RICf+YUBT/mVEV/5JEBP+PQAD/j0EA/49BAP+PQQD/j0EA/49AAP+RRAT/mVEV/5hQFf+VSgz/llIW/+vp4///////topj/49CAf+YUBT/mVEW/5NGB/+NPwD/hDAA/8Ghgf//////pG4+/4czAP+PQAD/lUoM/5lRFv+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAV/5hOEf+NQAD/xamO///////s6uX//////9vOv/+RSw7/lUkL/5lRFf+YUBT/kEMC/7CBVv//////9PX1/5tcJf+TSAn/mE8S/5VMD/+ziF//wZ5+/7+Zdv++mXf/vpl2/76Zdv/BnXz/tYpj/5ZNEP+YTxL/lUoM/5ZSFv/s6uP//////7aLY/+QQgH/mE8T/5VKDP+ufVD/wJ9+/7iQbP/YyLn//f///8mvlf+7k2//wZ9+/6ZuPP+VSgz/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+ZUhb/k0QD/4U4AP/h2tD///////X5+f+TURf/jTsA/5lSFv+YUBX/mFAU/5BDAv+wgFb///////T19f+bXSX/lEgJ/5dMD/+QRQX/6eXd/////////////////////////////////+7s6f+SSAn/lkwO/5VKDP+WUhb/6+nj//////+2imP/j0IB/5dOEf+NPwD/2sq5/////////////f////Lw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FP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/l1AUQAAAAACYUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/l04R/5ZRFP+1imH/rHtP/5RMDv+YTxP/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAT/5VLDf+odEb/uI1m/5dUGf+XTRD/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/wAAAAAAAAAAl04SgJhQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hRFf+XThL/kEEA/5FEBP+ZURX/mFAV/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+ZURX/kkUF/49AAP+XTRH/mVEV/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5dQEoAAAAAAAAAAAAAAAACaUBW/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQE/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQE/+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFb8AAAAAAAAAAAAAAAAAAAAAk0QEQJhQFb+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFES/5hREv+YURL/mFES/5hREv+YUBP/mFAT/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFES/5hREv+YUBT/mFAU/5hQFP+YUBP/mFAT/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBP/mFET/5hQE/+YUBT/mFAT/5hRE/+YUBP/mFAT/5hRE/+YURL/mFES/5hQFP+YUBP/mFAU/5hQFP+YUBT/mFAU/5pQFb+TRARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAl04SgJhQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAT/5hREv+YURL/mFES/5hREv+YURL/mFES/5hREv+YURL/mFES/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBP/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAT/5hREv+YURL/mFES/5hREv+YURL/mFAU/5hRE/+YURL/mFET/5hQE/+YUBT/mFAU/5hQFP+YUBT/mFAU/5dOEoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAl1AUQJdQFICYUBS/mFAUv5hQFP+YUBT/mFAU/5hREv+YURL/mFES/5hREv+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAU/5hREv+YURL/mFAU/5hQFP+YUBT/mFES/5hREv+YURL/mFAU/5hQFP+YUBT/mFAU/5hQFP+YUBT/mFAUv5hQFL+XUBSAl1ISgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+<link rel="icon" type="image/x-icon" sizes="16x16 24x24 32x32 48x48 64x64" href="https://mathkit.online/mathkit-icon.ico">
+</head>
+<body>
+<header><div class="wrap">
+  <a href="https://mathkit.online/#/" class="brand">math<i>kit</i></a>
+  <nav id="nav" class="nav" aria-label="Calculators"><a href="https://mathkit.online/#/" class="active">Scientific</a><a href="https://mathkit.online/#/fractions" class="">Fractions</a><a href="https://mathkit.online/#/units" class="">Units</a><a href="https://mathkit.online/#/quadratic" class="">Quadratic</a><a href="https://mathkit.online/#/age" class="">Age</a><a href="https://mathkit.online/#/dates" class="">Dates</a><a href="https://mathkit.online/#/timezones" class="">Time zones</a><a href="https://mathkit.online/#/gpa" class="">GPA</a><a href="https://mathkit.online/#/fuel" class="">Fuel cost</a></nav>
+</div></header>
+<main class="wrap" id="main"><div class="page-head"><h1>Scientific calculator</h1><p>Works in degrees or radians. Supports trig, logs, powers, roots and factorials.</p></div><div class="body"><div class="sci">
+    <div class="panel">
+      <div class="display">
+        <div class="disp-bar"><button type="button" class="chip mode" title="Switch angle unit">DEG</button><button type="button" class="chip ansbtn" title="Insert last answer">Ans</button></div>
+        <div class="topline"></div>
+        <input class="expr" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Expression" placeholder="0">
+        <div class="preview" aria-live="polite"></div>
+      </div>
+      <div class="keys"><button type="button" class="key fn" data-v="sin(">sin</button><button type="button" class="key fn" data-v="cos(">cos</button><button type="button" class="key fn" data-v="tan(">tan</button><button type="button" class="key fn" data-v="π">π</button><button type="button" class="key clr" data-v="clear">AC</button><button type="button" class="key fn" data-v="asin(">sin⁻¹</button><button type="button" class="key fn" data-v="acos(">cos⁻¹</button><button type="button" class="key fn" data-v="atan(">tan⁻¹</button><button type="button" class="key fn" data-v="e">e</button><button type="button" class="key clr" data-v="back">⌫</button><button type="button" class="key fn" data-v="ln(">ln</button><button type="button" class="key fn" data-v="log(">log</button><button type="button" class="key fn" data-v="√(">√</button><button type="button" class="key fn" data-v="^2">x²</button><button type="button" class="key fn" data-v="^">xʸ</button><button type="button" class="key " data-v="7">7</button><button type="button" class="key " data-v="8">8</button><button type="button" class="key " data-v="9">9</button><button type="button" class="key op" data-v="÷">÷</button><button type="button" class="key op" data-v="(">(</button><button type="button" class="key " data-v="4">4</button><button type="button" class="key " data-v="5">5</button><button type="button" class="key " data-v="6">6</button><button type="button" class="key op" data-v="×">×</button><button type="button" class="key op" data-v=")">)</button><button type="button" class="key " data-v="1">1</button><button type="button" class="key " data-v="2">2</button><button type="button" class="key " data-v="3">3</button><button type="button" class="key op" data-v="−">−</button><button type="button" class="key op" data-v="!">n!</button><button type="button" class="key " data-v="0">0</button><button type="button" class="key " data-v=".">.</button><button type="button" class="key op" data-v="%">%</button><button type="button" class="key op" data-v="+">+</button><button type="button" class="key eq" data-v="eval">=</button></div>
+      <div class="hist" hidden=""><h3>History</h3><div class="hist-list"></div></div>
+      <p class="muted small tip">You can also type with your keyboard. Enter = calculate, Esc = clear.</p>
+    </div>
+  </div></div></main>
+<footer><div class="wrap">Mathkit · Free online calculators.</div></footer>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+function fmt(n, maxFrac = 10) {
+  if (typeof n !== 'number' || Number.isNaN(n)) return '—';
+  if (!Number.isFinite(n)) return n > 0 ? '∞' : '−∞';
+  if (n === 0) return '0';
+  const a = Math.abs(n);
+  if (a >= 1e15 || a < 1e-7) return n.toExponential(6).replace(/\.?0+e/, 'e').replace('e+', 'e');
+  return Number(n.toPrecision(12)).toLocaleString('en-US', { maximumFractionDigits: maxFrac });
+}
+const plain = n => String(Number(n.toPrecision(12)));
+const stat = (k, v) => `<div class="stat"><div class="sk">${k}</div><div class="sv">${v}</div></div>`;
+const num = el => { const v = parseFloat(el.value); return Number.isFinite(v) ? v : NaN; };
+const isoLocal = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseD = s => { if (!s) return null; const [y, m, d] = s.split('-').map(Number); const dt = new Date(y, m - 1, d); dt.setFullYear(y); return dt; };
+const daysBetween = (a, b) => Math.round((b - a) / 864e5);
+const longDate = d => d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+const shortDate = d => d.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+const plural = (n, w) => `${fmt(n)} ${w}${n === 1 ? '' : 's'}`;
+const coarse = matchMedia('(pointer: coarse)').matches;
+
+/* ---------- registry ---------- */
+const CALCS = [
+  { id: 'scientific', group: 'Math & science', name: 'Scientific calculator', short: 'Scientific', glyph: 'sin', desc: 'Works in degrees or radians. Supports trig, logs, powers, roots and factorials.', render: scientific },
+  { id: 'fractions', group: 'Math & science', name: 'Fraction calculator', short: 'Fractions', glyph: '½', desc: 'Add, subtract, multiply and divide fractions.', render: fractions },
+  { id: 'units', group: 'Math & science', name: 'Unit converter', short: 'Units', glyph: '⇄', desc: 'Length, mass, volume, temperature and more.', render: units },
+  { id: 'quadratic', group: 'Math & science', name: 'Quadratic solver', short: 'Quadratic', glyph: 'x²', desc: 'Roots, vertex and a graph of ax² + bx + c.', render: quadratic },
+  { id: 'age', group: 'Everyday', name: 'Age calculator', short: 'Age', glyph: 'yrs', desc: 'Exact age in years, months and days.', render: age },
+  { id: 'dates', group: 'Everyday', name: 'Date calculator', short: 'Dates', glyph: 'Δd', desc: 'Days between dates, business days and date math.', render: dates },
+  { id: 'timezones', group: 'Everyday', name: 'Time zone converter', short: 'Time zones', glyph: 'UTC', desc: 'Convert a time between cities around the world.', render: timezones },
+  { id: 'gpa', group: 'Everyday', name: 'GPA calculator', short: 'GPA', glyph: '4.0', desc: 'Semester and cumulative GPA, with honors weighting.', render: gpa },
+  { id: 'fuel', group: 'Everyday', name: 'Fuel cost calculator', short: 'Fuel cost', glyph: 'mpg', desc: 'Work out the fuel cost of a trip.', render: fuel },
+];
+const GROUPS = [...new Set(CALCS.map(c => c.group))];
+
+function buildNav(active) {
+  $('#nav').innerHTML = CALCS.map((c, i) => `<a href="#/${i ? c.id : ''}" class="${active === c.id ? 'active' : ''}">${c.short}</a>`).join('');
+}
+
+let cleanup = null;
+function route() {
+  if (cleanup) { cleanup(); cleanup = null; }
+  const id = location.hash.replace(/^#\/?/, '');
+  const c = CALCS.find(x => x.id === id) || CALCS[0];
+  buildNav(c && c.id);
+  const main = $('#main');
+  main.innerHTML = `<div class="page-head"><h1>${c.name}</h1><p>${c.desc}</p></div><div class="body"></div>`;
+  cleanup = c.render($('.body', main)) || null;
+  document.title = c === CALCS[0] ? 'Mathkit - Online Calculator' : `${c.name} - Mathkit (Online Calculator)`;
+  window.scrollTo(0, 0);
+}
+
+/* ---------- expression engine (no eval) ---------- */
+function tokenize(s) {
+  s = s.replace(/×/g, '*').replace(/÷/g, '/').replace(/[−–]/g, '-');
+  const t = []; let i = 0;
+  while (i < s.length) {
+    const c = s[i];
+    if (/\s/.test(c)) { i++; continue; }
+    if (/[0-9.]/.test(c)) {
+      const m = s.slice(i).match(/^(\d*\.?\d+|\d+\.)([eE][+-]?\d+)?/);
+      if (!m) throw Error('Bad number');
+      t.push({ type: 'num', v: parseFloat(m[0]) }); i += m[0].length; continue;
+    }
+    if (c === 'π') { t.push({ type: 'id', v: 'pi' }); i++; continue; }
+    if (c === '√') { t.push({ type: 'id', v: 'sqrt' }); i++; continue; }
+    if (/[a-zA-Z]/.test(c)) { const m = s.slice(i).match(/^[a-zA-Z]+/); t.push({ type: 'id', v: m[0].toLowerCase() }); i += m[0].length; continue; }
+    if ('+-*/^()!%'.includes(c)) { t.push({ type: 'op', v: c }); i++; continue; }
+    throw Error(`Unexpected “${c}”`);
+  }
+  return t;
+}
+function factorial(n) {
+  if (n < 0 || !Number.isInteger(n)) throw Error('n! needs a whole number ≥ 0');
+  if (n > 170) return Infinity;
+  let r = 1; for (let k = 2; k <= n; k++) r *= k; return r;
+}
+function evaluate(src, { deg = true, ans = 0 } = {}) {
+  const t = tokenize(src); let p = 0;
+  const isOp = v => t[p] && t[p].type === 'op' && t[p].v === v;
+  const clean = x => Math.abs(x) < 1e-12 ? 0 : x;
+  const toR = x => deg ? x * Math.PI / 180 : x, fromR = x => deg ? x * 180 / Math.PI : x;
+  const F = {
+    sin: x => clean(Math.sin(toR(x))), cos: x => clean(Math.cos(toR(x))),
+    tan: x => { if (deg && ((x % 180) + 180) % 180 === 90) throw Error('tan is undefined here'); return clean(Math.tan(toR(x))); },
+    asin: x => fromR(Math.asin(x)), acos: x => fromR(Math.acos(x)), atan: x => fromR(Math.atan(x)),
+    ln: Math.log, log: Math.log10, sqrt: Math.sqrt, cbrt: Math.cbrt, abs: Math.abs, exp: Math.exp,
+  };
+  const C = { pi: Math.PI, e: Math.E, ans };
+  const startsPrimary = () => t[p] && (t[p].type === 'num' || t[p].type === 'id' || isOp('('));
+  function expr() { let v = term(); while (isOp('+') || isOp('-')) { const o = t[p++].v, r = term(); v = o === '+' ? v + r : v - r; } return v; }
+  function term() {
+    let v = unary();
+    for (;;) {
+      if (isOp('*') || isOp('/')) { const o = t[p++].v, r = unary(); if (o === '/' && r === 0) throw Error('Can’t divide by zero'); v = o === '*' ? v * r : v / r; }
+      else if (startsPrimary()) v *= power();
+      else break;
+    }
+    return v;
+  }
+  function unary() { if (isOp('-')) { p++; return -unary(); } if (isOp('+')) { p++; return unary(); } return power(); }
+  function power() { const b = postfix(); if (isOp('^')) { p++; return Math.pow(b, unary()); } return b; }
+  function postfix() { let v = primary(); for (;;) { if (isOp('!')) { p++; v = factorial(v); } else if (isOp('%')) { p++; v /= 100; } else break; } return v; }
+  function primary() {
+    const k = t[p];
+    if (!k) throw Error('Incomplete expression');
+    if (k.type === 'num') { p++; return k.v; }
+    if (isOp('(')) { p++; const v = expr(); if (isOp(')')) p++; else if (p < t.length) throw Error('Missing )'); return v; }
+    if (k.type === 'id') {
+      p++;
+      if (k.v in F) { const a = isOp('(') ? primary() : power(); const r = F[k.v](a); if (Number.isNaN(r)) throw Error('Math domain error'); return r; }
+      if (k.v in C) return C[k.v];
+      throw Error(`Unknown “${k.v}”`);
+    }
+    throw Error(`Unexpected “${k.v}”`);
+  }
+  const v = expr();
+  if (p < t.length) throw Error(`Unexpected “${t[p].v}”`);
+  if (Number.isNaN(v)) throw Error('Math domain error');
+  if (!Number.isFinite(v)) throw Error('Result is too large');
+  return v;
+}
+
+/* ---------- about:blank launcher ---------- */
+function openInAboutBlank() {
+  const win = window.open('about:blank', '_blank');
+  if (!win) { alert('Pop-up blocked — please allow pop-ups for this page and try again.'); return false; }
+  const doc = win.document;
+  doc.title = 'Home - Classroom';
+  // The about:blank tab keeps the original mathkit favicon (embedded as a data URI
+  // so it doesn't depend on a network fetch).
+  const icon = doc.createElement('link');
+  icon.rel = 'icon'; icon.type = 'image/x-icon'; icon.href = location.origin + '/favicon.ico';
+  doc.head.appendChild(icon);
+  const icon2 = doc.createElement('link');
+  icon2.rel = 'shortcut icon'; icon2.type = 'image/x-icon'; icon2.href = location.origin + '/favicon.ico';
+  doc.head.appendChild(icon2);
+  const style = doc.createElement('style');
+  style.textContent = 'html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#000}iframe{display:block;width:100%;height:100%;border:0}';
+  doc.head.appendChild(style);
+  const frame = doc.createElement('iframe');
+  frame.src = location.origin + '/?app=1';
+  frame.allow = 'fullscreen; autoplay; clipboard-read; clipboard-write; gamepad; encrypted-media; picture-in-picture; pointer-lock';
+  frame.setAttribute('allowfullscreen', '');
+  doc.body.appendChild(frame);
+  return true;
+}
+
+/* ---------- 1. Scientific ---------- */
+function scientific(root) {
+  let deg = true, ans = 0, justEval = false; const hist = [];
+  const KEYS = [
+    ['sin', 'sin(', 'fn'], ['cos', 'cos(', 'fn'], ['tan', 'tan(', 'fn'], ['π', 'π', 'fn'], ['AC', 'clear', 'clr'],
+    ['sin⁻¹', 'asin(', 'fn'], ['cos⁻¹', 'acos(', 'fn'], ['tan⁻¹', 'atan(', 'fn'], ['e', 'e', 'fn'], ['⌫', 'back', 'clr'],
+    ['ln', 'ln(', 'fn'], ['log', 'log(', 'fn'], ['√', '√(', 'fn'], ['x²', '^2', 'fn'], ['xʸ', '^', 'fn'],
+    ['7', '7', ''], ['8', '8', ''], ['9', '9', ''], ['÷', '÷', 'op'], ['(', '(', 'op'],
+    ['4', '4', ''], ['5', '5', ''], ['6', '6', ''], ['×', '×', 'op'], [')', ')', 'op'],
+    ['1', '1', ''], ['2', '2', ''], ['3', '3', ''], ['−', '−', 'op'], ['n!', '!', 'op'],
+    ['0', '0', ''], ['.', '.', ''], ['%', '%', 'op'], ['+', '+', 'op'], ['=', 'eval', 'eq'],
+  ];
+  root.innerHTML = `<div class="sci">
+    <div class="panel">
+      <div class="display">
+        <div class="disp-bar"><button type="button" class="chip mode" title="Switch angle unit">DEG</button><button type="button" class="chip ansbtn" title="Insert last answer">Ans</button></div>
+        <div class="topline"></div>
+        <input class="expr" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Expression" placeholder="0" ${coarse ? 'inputmode="none"' : ''}>
+        <div class="preview" aria-live="polite"></div>
+      </div>
+      <div class="keys">${KEYS.map(([l, v, c]) => `<button type="button" class="key ${c}" data-v="${esc(v)}">${l}</button>`).join('')}</div>
+      <div class="hist" hidden><h3>History</h3><div class="hist-list"></div></div>
+      <p class="muted small tip">You can also type with your keyboard. Enter = calculate, Esc = clear.</p>
+    </div>
+  </div>`;
+  const inp = $('.expr', root), prev = $('.preview', root), top = $('.topline', root), modeBtn = $('.mode', root);
+  const live = () => {
+    const v = inp.value.trim(); prev.classList.remove('err');
+    if (!v) { prev.textContent = ''; return; }
+    try { prev.textContent = '= ' + fmt(evaluate(v, { deg, ans })); } catch (e) { prev.textContent = ''; }
+  };
+  const toEnd = () => { const L = inp.value.length; inp.setSelectionRange(L, L); };
+  function insert(s) {
+    if (justEval) { inp.value = /^[+\-−×÷*/^!%]/.test(s) ? inp.value : ''; top.textContent = ''; justEval = false; toEnd(); }
+    const st = inp.selectionStart ?? inp.value.length, en = inp.selectionEnd ?? inp.value.length;
+    inp.value = inp.value.slice(0, st) + s + inp.value.slice(en);
+    const pos = st + s.length; inp.setSelectionRange(pos, pos); live(); checkCode();
+  }
+
+  function checkCode() { if (inp.value.trim() === '0000') { clearAll(); openInAboutBlank(); } }
+  function run() {
+    const v = inp.value.trim(); if (!v) return;
+    try {
+      const r = evaluate(v, { deg, ans }); ans = r;
+      hist.unshift({ e: v, r }); if (hist.length > 40) hist.pop(); drawHist();
+      top.textContent = v + ' ='; inp.value = plain(r); prev.textContent = ''; prev.classList.remove('err'); justEval = true; toEnd();
+    } catch (e) { prev.textContent = e.message; prev.classList.add('err'); }
+  }
+  function drawHist() {
+    $('.hist', root).hidden = !hist.length;
+    $('.hist-list', root).innerHTML = hist.map((h, i) => `<button type="button" class="hitem" data-i="${i}"><span class="he">${esc(h.e)}</span><span class="hr">${fmt(h.r)}</span></button>`).join('');
+  }
+  function clearAll() { inp.value = ''; top.textContent = ''; justEval = false; live(); }
+
+  $('.keys', root).addEventListener('click', e => {
+    const b = e.target.closest('.key'); if (!b) return; const v = b.dataset.v;
+    // Track 0000 sequence
+    if (v === 'clear') clearAll();
+    else if (v === 'back') {
+      justEval = false; top.textContent = '';
+      const st = inp.selectionStart ?? inp.value.length, en = inp.selectionEnd ?? st;
+      if (st !== en) { inp.value = inp.value.slice(0, st) + inp.value.slice(en); inp.setSelectionRange(st, st); }
+      else if (st > 0) {
+        const before = inp.value.slice(0, st), m = before.match(/(?:asin|acos|atan|sin|cos|tan|ln|log|√)\($|Ans$/);
+        const n = m ? m[0].length : 1; inp.value = before.slice(0, -n) + inp.value.slice(st); inp.setSelectionRange(st - n, st - n);
+      }
+      live();
+    }
+    else if (v === 'eval') run();
+    else insert(v);
+    if (!coarse) inp.focus();
+  });
+  inp.addEventListener('input', () => { justEval = false; live(); checkCode(); });
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); run(); return; }
+    if (e.key === 'Escape') { clearAll(); return; }
+    if (justEval && e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+      if (/[+\-*/^!%]/.test(e.key)) toEnd(); else inp.value = '';
+      top.textContent = ''; justEval = false;
+    }
+  });
+  modeBtn.addEventListener('click', () => { deg = !deg; modeBtn.textContent = deg ? 'DEG' : 'RAD'; live(); if (!coarse) inp.focus(); });
+  $('.ansbtn', root).addEventListener('click', () => { insert('Ans'); if (!coarse) inp.focus(); });
+  $('.hist-list', root).addEventListener('click', e => {
+    const b = e.target.closest('.hitem'); if (!b) return;
+    inp.value = hist[+b.dataset.i].e; top.textContent = ''; justEval = false; live(); toEnd(); if (!coarse) inp.focus();
+  });
+  if (!coarse) inp.focus();
+}
+
+/* ---------- 2. Fractions ---------- */
+const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
+const lcm = (a, b) => a / gcd(a, b) * b;
+function normF(n, d) { if (d < 0) { n = -n; d = -d; } const g = gcd(n, d) || 1; return { n: n / g, d: d / g }; }
+function parseFrac(s) {
+  s = s.trim().replace(/[−–]/g, '-'); let m;
+  if (!s) throw Error('Enter both fractions');
+  if ((m = s.match(/^(-?)(\d+)\s+(\d+)\s*\/\s*(\d+)$/))) { const d = +m[4]; if (!d) throw Error('A denominator can’t be 0'); const n = +m[2] * d + +m[3]; return normF(m[1] ? -n : n, d); }
+  if ((m = s.match(/^(-?\d+)\s*\/\s*(-?\d+)$/))) { const d = +m[2]; if (!d) throw Error('A denominator can’t be 0'); return normF(+m[1], d); }
+  if (/^-?(\d+\.?\d*|\.\d+)$/.test(s)) { const dec = (s.split('.')[1] || '').length; const d = 10 ** dec; return normF(Math.round(parseFloat(s) * d), d); }
+  throw Error(`Couldn’t read “${s}”`);
+}
+const frHTML = f => f.d === 1 ? `<span>${f.n < 0 ? '−' : ''}${Math.abs(f.n)}</span>` : `<span>${f.n < 0 ? '−' : ''}</span><span class="fr"><span class="n">${Math.abs(f.n)}</span><span class="d">${f.d}</span></span>`;
+const frTxt = f => f.d === 1 ? `${f.n}` : `${f.n}/${f.d}`;
+function mixed(f) { if (f.d === 1 || Math.abs(f.n) < f.d) return frTxt(f); const w = Math.trunc(f.n / f.d), r = Math.abs(f.n % f.d); return `${w} ${r}/${f.d}`; }
+function fractions(root) {
+  root.innerHTML = `<div class="panel">
+    <div class="frac-row">
+      <div class="field"><label for="fa">First fraction</label><input id="fa" value="3/4" autocomplete="off"></div>
+      <div class="field"><label for="fop">Operation</label><select id="fop"><option value="+">+ Add</option><option value="-">− Subtract</option><option value="*">× Multiply</option><option value="/">÷ Divide</option></select></div>
+      <div class="field"><label for="fb">Second fraction</label><input id="fb" value="1 2/3" autocomplete="off"></div>
+    </div>
+    <p class="muted small">Accepts fractions (3/4), mixed numbers (1 2/3), whole numbers (5) and decimals (0.25).</p>
+    <div class="result"><div class="k">Result</div><div class="frac-out" id="fout"></div><div class="work" id="fwork"></div><div class="stats" id="fstats"></div></div>
+  </div>`;
+  const calc = () => {
+    const out = $('#fout'), work = $('#fwork'), st = $('#fstats');
+    try {
+      const a = parseFrac($('#fa').value), b = parseFrac($('#fb').value), op = $('#fop').value;
+      let r, steps = '';
+      const sym = { '+': '+', '-': '−', '*': '×', '/': '÷' }[op];
+      if (op === '+' || op === '-') {
+        const L = lcm(a.d, b.d), an = a.n * L / a.d, bn = b.n * L / b.d, rn = op === '+' ? an + bn : an - bn;
+        r = normF(rn, L);
+        steps = `${frTxt(a)} ${sym} ${frTxt(b)} = ${an}/${L} ${sym} ${bn}/${L} = ${rn}/${L}`;
+        if (r.n !== rn || r.d !== L) steps += ` = ${frTxt(r)}`;
+      } else if (op === '*') {
+        r = normF(a.n * b.n, a.d * b.d);
+        steps = `${frTxt(a)} × ${frTxt(b)} = ${a.n * b.n}/${a.d * b.d}` + (r.d !== a.d * b.d ? ` = ${frTxt(r)}` : '');
+      } else {
+        if (b.n === 0) throw Error('Can’t divide by zero');
+        r = normF(a.n * b.d, a.d * b.n);
+        steps = `${frTxt(a)} ÷ ${frTxt(b)} = ${frTxt(a)} × ${b.d}/${b.n} = ${frTxt(r)}`;
+      }
+      if (!Number.isSafeInteger(r.n) || !Number.isSafeInteger(r.d)) throw Error('Numbers are too large');
+      out.classList.remove('err');
+      out.innerHTML = frHTML(r);
+      work.textContent = steps;
+      st.innerHTML = stat('Simplified', frTxt(r)) + stat('Mixed number', mixed(r)) + stat('Decimal', fmt(r.n / r.d)) + stat('Percent', fmt(r.n / r.d * 100, 6) + '%');
+    } catch (e) { out.innerHTML = ''; out.textContent = e.message; out.classList.add('err'); work.textContent = ''; st.innerHTML = ''; }
+  };
+  root.addEventListener('input', calc); calc();
+}
+
+/* ---------- 3. Units ---------- */
+const UNITS = {
+  Length: { m: ['Meter', 1], km: ['Kilometer', 1e3], cm: ['Centimeter', .01], mm: ['Millimeter', .001], 'µm': ['Micrometer', 1e-6], mi: ['Mile', 1609.344], yd: ['Yard', .9144], ft: ['Foot', .3048], in: ['Inch', .0254], nmi: ['Nautical mile', 1852] },
+  Mass: { kg: ['Kilogram', 1], g: ['Gram', .001], mg: ['Milligram', 1e-6], t: ['Metric ton', 1000], lb: ['Pound', .45359237], oz: ['Ounce', .028349523125], st: ['Stone', 6.35029318], 'US ton': ['Short ton', 907.18474] },
+  Temperature: { '°C': ['Celsius'], '°F': ['Fahrenheit'], K: ['Kelvin'] },
+  Volume: { L: ['Liter', 1], mL: ['Milliliter', .001], 'm³': ['Cubic meter', 1000], gal: ['US gallon', 3.785411784], qt: ['US quart', .946352946], pt: ['US pint', .473176473], cup: ['US cup', .2365882365], 'fl oz': ['US fluid ounce', .0295735295625], tbsp: ['Tablespoon', .01478676478125], tsp: ['Teaspoon', .00492892159375], 'imp gal': ['Imperial gallon', 4.54609] },
+  Area: { 'm²': ['Square meter', 1], 'km²': ['Square kilometer', 1e6], ha: ['Hectare', 1e4], ac: ['Acre', 4046.8564224], 'mi²': ['Square mile', 2589988.110336], 'yd²': ['Square yard', .83612736], 'ft²': ['Square foot', .09290304], 'in²': ['Square inch', .00064516], 'cm²': ['Square centimeter', 1e-4] },
+  Speed: { 'km/h': ['Kilometers per hour', 1 / 3.6], mph: ['Miles per hour', .44704], 'm/s': ['Meters per second', 1], kn: ['Knot', 1852 / 3600], 'ft/s': ['Feet per second', .3048] },
+  Time: { s: ['Second', 1], ms: ['Millisecond', .001], min: ['Minute', 60], h: ['Hour', 3600], d: ['Day', 86400], wk: ['Week', 604800], mo: ['Month (avg)', 2629746], yr: ['Year (avg)', 31556952] },
+  Data: { B: ['Byte', 1], bit: ['Bit', .125], KB: ['Kilobyte', 1e3], MB: ['Megabyte', 1e6], GB: ['Gigabyte', 1e9], TB: ['Terabyte', 1e12], KiB: ['Kibibyte', 1024], MiB: ['Mebibyte', 1048576], GiB: ['Gibibyte', 1073741824] },
+};
+function convertUnit(v, from, to, cat) {
+  if (cat === 'Temperature') {
+    const k = from === '°C' ? v + 273.15 : from === '°F' ? (v - 32) * 5 / 9 + 273.15 : v;
+    return to === '°C' ? k - 273.15 : to === '°F' ? (k - 273.15) * 9 / 5 + 32 : k;
+  }
+  return v * UNITS[cat][from][1] / UNITS[cat][to][1];
+}
+function units(root) {
+  let cat = 'Length';
+  root.innerHTML = `<div class="panel">
+    <div class="pills">${Object.keys(UNITS).map(c => `<button type="button" class="pill" data-c="${c}">${c}</button>`).join('')}</div>
+    <div class="conv">
+      <div class="field"><label for="uv">Value</label><input id="uv" type="number" step="any" inputmode="decimal" value="1"></div>
+      <div class="field"><label for="uf">From</label><select id="uf"></select></div>
+      <button type="button" class="icon-btn swap" aria-label="Swap units" title="Swap units">⇄</button>
+      <div class="field"><label for="ut">To</label><select id="ut"></select></div>
+    </div>
+    <div class="result"><div class="k">Result</div><div class="big" id="uout"></div><div class="sub muted" id="uform"></div></div>
+    <h3 class="sec">All units</h3>
+    <div class="table" id="uall"></div>
+  </div>`;
+  const uf = $('#uf'), ut = $('#ut');
+  function setCat(c) {
+    cat = c; const keys = Object.keys(UNITS[c]);
+    const opts = keys.map(k => `<option value="${esc(k)}">${UNITS[c][k][0]} (${esc(k)})</option>`).join('');
+    uf.innerHTML = opts; ut.innerHTML = opts; uf.value = keys[0]; ut.value = keys[1];
+    $$('.pill', root).forEach(p => p.classList.toggle('on', p.dataset.c === c));
+    calc();
+  }
+  function calc() {
+    const v = num($('#uv')), from = uf.value, to = ut.value, out = $('#uout');
+    if (Number.isNaN(v)) { out.textContent = 'Enter a value'; out.classList.add('err'); $('#uform').textContent = ''; $('#uall').innerHTML = ''; return; }
+    out.classList.remove('err');
+    out.textContent = `${fmt(convertUnit(v, from, to, cat))} ${to}`;
+    $('#uform').textContent = cat === 'Temperature'
+      ? { '°C°F': '°F = °C × 9/5 + 32', '°F°C': '°C = (°F − 32) × 5/9', '°CK': 'K = °C + 273.15', 'K°C': '°C = K − 273.15', '°FK': 'K = (°F − 32) × 5/9 + 273.15', 'K°F': '°F = (K − 273.15) × 9/5 + 32' }[from + to] || 'Same unit'
+      : `${fmt(v)} ${from} = ${fmt(convertUnit(v, from, to, cat))} ${to}` + (v !== 1 ? ` · 1 ${from} = ${fmt(convertUnit(1, from, to, cat))} ${to}` : '');
+    $('#uall').innerHTML = Object.keys(UNITS[cat]).map(k => `<button type="button" class="trow ${k === to ? 'on' : ''}" data-k="${esc(k)}"><span>${UNITS[cat][k][0]}</span><span class="mono">${fmt(convertUnit(v, from, k, cat))} ${esc(k)}</span></button>`).join('');
+  }
+  $('.pills', root).addEventListener('click', e => { const b = e.target.closest('.pill'); if (b) setCat(b.dataset.c); });
+  $('.swap', root).addEventListener('click', () => { const a = uf.value; uf.value = ut.value; ut.value = a; calc(); });
+  $('#uall').addEventListener('click', e => { const b = e.target.closest('.trow'); if (b) { ut.value = b.dataset.k; calc(); } });
+  root.addEventListener('input', calc); root.addEventListener('change', calc);
+  setCat(cat);
+}
+
+/* ---------- 4. Quadratic ---------- */
+function quadratic(root) {
+  root.innerHTML = `<div class="panel">
+    <div class="grid2" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <div class="field"><label for="qa">a</label><input id="qa" type="number" step="any" inputmode="decimal" value="1"></div>
+      <div class="field"><label for="qb">b</label><input id="qb" type="number" step="any" inputmode="decimal" value="-3"></div>
+      <div class="field"><label for="qc">c</label><input id="qc" type="number" step="any" inputmode="decimal" value="2"></div>
+    </div>
+    <div class="result"><div class="k">Solving</div><div class="eq-show" id="qeq"></div><div class="big" id="qout"></div><div class="stats" id="qstats"></div></div>
+    <canvas class="plot" id="qplot" aria-label="Graph of the parabola"></canvas>
+  </div>`;
+  let last = null;
+  const term = (k, v, first) => { if (k === 0) return ''; const neg = k < 0, abs = Math.abs(k); const co = (abs === 1 && v) ? '' : fmt(abs); return first ? `${neg ? '−' : ''}${co}${v}` : ` ${neg ? '−' : '+'} ${co}${v}`; };
+  function eqStr(a, b, c) { let s = ''; [[a, 'x²'], [b, 'x'], [c, '']].forEach(([k, v]) => { s += term(k, v, !s); }); return (s || '0') + ' = 0'; }
+  function calc() {
+    const a = num($('#qa')), b = num($('#qb')), c = num($('#qc')), out = $('#qout'), st = $('#qstats');
+    if ([a, b, c].some(Number.isNaN)) { out.textContent = 'Enter a, b and c'; out.classList.add('err'); st.innerHTML = ''; $('#qeq').textContent = ''; last = null; draw(); return; }
+    out.classList.remove('err'); $('#qeq').textContent = eqStr(a, b, c);
+    if (a === 0) {
+      last = { a, b, c, roots: [] };
+      if (b === 0) { out.textContent = c === 0 ? 'Every x is a solution' : 'No solution'; st.innerHTML = stat('Note', 'a = 0 and b = 0, so this isn’t an equation in x'); }
+      else { const r = -c / b; out.textContent = `x = ${fmt(r)}`; st.innerHTML = stat('Type', 'Linear (a = 0)') + stat('Slope', fmt(b)) + stat('y-intercept', fmt(c)); last.roots = [r]; }
+      draw(); return;
+    }
+    const D = b * b - 4 * a * c, h = -b / (2 * a), k = a * h * h + b * h + c;
+    let roots = [], rootsTxt, factored = '—';
+    if (D > 0) {
+      const q = -0.5 * (b + (b >= 0 ? 1 : -1) * Math.sqrt(D)); const r1 = q / a, r2 = c / q;
+      roots = [Math.min(r1, r2), Math.max(r1, r2)];
+      rootsTxt = `x₁ = ${fmt(roots[0])},  x₂ = ${fmt(roots[1])}`;
+      factored = `${a === 1 ? '' : a === -1 ? '−' : fmt(a)}(x ${roots[0] < 0 ? '+' : '−'} ${fmt(Math.abs(roots[0]))})(x ${roots[1] < 0 ? '+' : '−'} ${fmt(Math.abs(roots[1]))})`;
+    } else if (D === 0) {
+      roots = [h]; rootsTxt = `x = ${fmt(h)} (double root)`;
+      factored = `${a === 1 ? '' : a === -1 ? '−' : fmt(a)}(x ${h < 0 ? '+' : '−'} ${fmt(Math.abs(h))})²`;
+    } else {
+      const im = Math.sqrt(-D) / (2 * Math.abs(a));
+      rootsTxt = `x = ${fmt(h)} ± ${fmt(im)}i`;
+    }
+    out.textContent = rootsTxt;
+    st.innerHTML = stat('Discriminant', `${fmt(D)} · ${D > 0 ? '2 real roots' : D === 0 ? '1 real root' : 'complex roots'}`) +
+      stat('Vertex', `(${fmt(h)}, ${fmt(k)})`) + stat('Axis of symmetry', `x = ${fmt(h)}`) +
+      stat('y-intercept', `(0, ${fmt(c)})`) + stat('Opens', a > 0 ? 'Upward (minimum)' : 'Downward (maximum)') + stat('Factored form', factored);
+    last = { a, b, c, roots, h, k }; draw();
+  }
+  function niceStep(r) { const p = 10 ** Math.floor(Math.log10(r)); const m = r / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; }
+  function draw() {
+    const cv = $('#qplot'); if (!cv) return;
+    const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    if (!last || !W) return;
+    const cs = getComputedStyle(document.documentElement), col = n => cs.getPropertyValue(n).trim();
+    const { a, b, c, roots } = last, f = x => a * x * x + b * x + c;
+    const center = a !== 0 ? last.h : (roots[0] ?? 0);
+    const spread = roots.length === 2 ? roots[1] - roots[0] : 0;
+    const half = Math.max(4, spread * 0.8 + 2), x0 = center - half, x1 = center + half;
+    let ys = []; for (let i = 0; i <= 200; i++) ys.push(f(x0 + (x1 - x0) * i / 200));
+    let y0 = Math.min(0, ...ys), y1 = Math.max(0, ...ys);
+    if (a !== 0) { const cap = Math.max(Math.abs(last.k) * 3, 10); y0 = Math.max(y0, -cap + Math.min(0, last.k)); y1 = Math.min(y1, cap + Math.max(0, last.k)); }
+    if (y1 - y0 < 1e-9) { y0 -= 1; y1 += 1; }
+    const py = (y1 - y0) * .1; y0 -= py; y1 += py;
+    const X = x => (x - x0) / (x1 - x0) * W, Y = y => H - (y - y0) / (y1 - y0) * H;
+    ctx.font = '12px Georgia, serif'; ctx.lineWidth = 1;
+    const sx = niceStep((x1 - x0) / 8), sy = niceStep((y1 - y0) / 6);
+    ctx.strokeStyle = '#eeeeea'; ctx.fillStyle = '#888';
+    for (let x = Math.ceil(x0 / sx) * sx; x <= x1; x += sx) { ctx.beginPath(); ctx.moveTo(X(x) + .5, 0); ctx.lineTo(X(x) + .5, H); ctx.stroke(); if (Math.abs(x) > sx / 2) ctx.fillText(fmt(x, 4), X(x) + 3, Math.min(Math.max(Y(0) + 13, 13), H - 4)); }
+    for (let y = Math.ceil(y0 / sy) * sy; y <= y1; y += sy) { ctx.beginPath(); ctx.moveTo(0, Y(y) + .5); ctx.lineTo(W, Y(y) + .5); ctx.stroke(); if (Math.abs(y) > sy / 2) ctx.fillText(fmt(y, 4), Math.min(Math.max(X(0) + 4, 4), W - 40), Y(y) - 3); }
+    ctx.strokeStyle = '#999'; ctx.lineWidth = 1;
+    if (y0 < 0 && y1 > 0) { ctx.beginPath(); ctx.moveTo(0, Y(0)); ctx.lineTo(W, Y(0)); ctx.stroke(); }
+    if (x0 < 0 && x1 > 0) { ctx.beginPath(); ctx.moveTo(X(0), 0); ctx.lineTo(X(0), H); ctx.stroke(); }
+    ctx.strokeStyle = col('--accent'); ctx.lineWidth = 2; ctx.beginPath();
+    for (let i = 0; i <= 400; i++) { const x = x0 + (x1 - x0) * i / 400, y = Y(f(x)); i ? ctx.lineTo(X(x), y) : ctx.moveTo(X(x), y); }
+    ctx.stroke();
+    const dot = (x, y) => { ctx.beginPath(); ctx.arc(X(x), Y(y), 5, 0, 7); ctx.fillStyle = col('--accent'); ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke(); };
+    roots.forEach(r => dot(r, 0));
+    if (a !== 0) dot(last.h, last.k);
+  }
+  root.addEventListener('input', calc);
+  const ro = new ResizeObserver(draw); ro.observe($('#qplot'));
+  addEventListener('mk-theme', draw);
+  calc();
+  return () => { ro.disconnect(); removeEventListener('mk-theme', draw); };
+}
+
+/* ---------- 5. Age ---------- */
+function ymd(a, b) {
+  let y = b.getFullYear() - a.getFullYear(), m = b.getMonth() - a.getMonth(), d = b.getDate() - a.getDate();
+  if (d < 0) { m--; d += new Date(b.getFullYear(), b.getMonth(), 0).getDate(); }
+  if (m < 0) { y--; m += 12; }
+  return { y, m, d };
+}
+function age(root) {
+  const today = isoLocal(new Date());
+  root.innerHTML = `<div class="panel">
+    <div class="grid2">
+      <div class="field"><label for="ab">Date of birth</label><input id="ab" type="date" value="1995-06-15" max="${today}"></div>
+      <div class="field"><label for="aa">Age on</label><input id="aa" type="date" value="${today}"></div>
+    </div>
+    <div class="result"><div class="k">Age</div><div class="big" id="aout"></div><div class="stats" id="astats"></div></div>
+  </div>`;
+  const calc = () => {
+    const b = parseD($('#ab').value), on = parseD($('#aa').value), out = $('#aout'), st = $('#astats');
+    if (!b || !on) { out.textContent = 'Pick both dates'; out.classList.add('err'); st.innerHTML = ''; return; }
+    if (b > on) { out.textContent = 'Birth date is after the “age on” date'; out.classList.add('err'); st.innerHTML = ''; return; }
+    out.classList.remove('err');
+    const { y, m, d } = ymd(b, on), days = daysBetween(b, on);
+    out.textContent = `${plural(y, 'year')}, ${plural(m, 'month')}, ${plural(d, 'day')}`;
+    let nb = new Date(on.getFullYear(), b.getMonth(), b.getDate());
+    if (nb < on) nb = new Date(on.getFullYear() + 1, b.getMonth(), b.getDate());
+    const until = daysBetween(on, nb);
+    st.innerHTML = stat('Total months', fmt(y * 12 + m)) + stat('Total weeks', fmt(Math.floor(days / 7))) + stat('Total days', fmt(days)) +
+      stat('Total hours', fmt(days * 24)) + stat('Born on a', b.toLocaleDateString('en-US', { weekday: 'long' })) +
+      stat('Next birthday', until === 0 ? 'Today — happy birthday!' : `${plural(until, 'day')} · ${nb.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`) +
+      stat('Turning', fmt(nb.getFullYear() - b.getFullYear()));
+  };
+  root.addEventListener('input', calc); calc();
+}
+
+/* ---------- 6. Dates ---------- */
+function addMonths(d, n) {
+  const y = d.getFullYear(), m = d.getMonth() + n, day = d.getDate();
+  const last = new Date(y, m + 1, 0).getDate();
+  return new Date(y, m, Math.min(day, last));
+}
+function businessDays(start, n) {
+  const full = Math.floor(n / 7); let bd = full * 5;
+  const s = new Date(start.getFullYear(), start.getMonth(), start.getDate() + full * 7);
+  for (let i = 0; i < n % 7; i++) { const w = new Date(s.getFullYear(), s.getMonth(), s.getDate() + i).getDay(); if (w !== 0 && w !== 6) bd++; }
+  return bd;
+}
+function dates(root) {
+  const t = new Date(), today = isoLocal(t), later = isoLocal(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 30));
+  root.innerHTML = `<div class="panel">
+    <h3 class="sec first">Days between two dates</h3>
+    <div class="grid2">
+      <div class="field"><label for="ds">Start date</label><input id="ds" type="date" value="${today}"></div>
+      <div class="field"><label for="de">End date</label><input id="de" type="date" value="${later}"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="di"> Include the end date in the count</label>
+    <div class="result"><div class="k">Duration</div><div class="big" id="dout"></div><div class="sub muted" id="dsub"></div><div class="stats" id="dstats"></div></div>
+  </div>
+  <div class="panel mt">
+    <h3 class="sec first">Add or subtract time</h3>
+    <div class="add-row">
+      <div class="field"><label for="xs">Start date</label><input id="xs" type="date" value="${today}"></div>
+      <div class="field"><label for="xo">Operation</label><select id="xo"><option value="1">+ Add</option><option value="-1">− Subtract</option></select></div>
+      <div class="field"><label for="xn">Amount</label><input id="xn" type="number" step="1" min="0" value="90"></div>
+      <div class="field"><label for="xu">Unit</label><select id="xu"><option value="d">Days</option><option value="w">Weeks</option><option value="m">Months</option><option value="y">Years</option><option value="b">Business days</option></select></div>
+    </div>
+    <div class="result"><div class="k">Result</div><div class="big" id="xout"></div><div class="sub muted" id="xsub"></div></div>
+  </div>`;
+  function diff() {
+    let a = parseD($('#ds').value), b = parseD($('#de').value); const out = $('#dout'), st = $('#dstats'), sub = $('#dsub');
+    if (!a || !b) { out.textContent = 'Pick both dates'; out.classList.add('err'); st.innerHTML = ''; sub.textContent = ''; return; }
+    out.classList.remove('err');
+    const rev = b < a; if (rev) [a, b] = [b, a];
+    const inc = $('#di').checked, n = daysBetween(a, b) + (inc ? 1 : 0);
+    const endAdj = inc ? new Date(b.getFullYear(), b.getMonth(), b.getDate() + 1) : b;
+    const { y, m, d } = ymd(a, endAdj), bd = businessDays(a, n);
+    out.textContent = plural(n, 'day');
+    sub.textContent = `${shortDate(a)} → ${shortDate(b)}${rev ? ' (dates swapped: end was before start)' : ''}`;
+    st.innerHTML = stat('Weeks', `${fmt(Math.floor(n / 7))} wk, ${plural(n % 7, 'day')}`) + stat('Years · months · days', `${y}y ${m}m ${d}d`) +
+      stat('Business days', fmt(bd)) + stat('Weekend days', fmt(n - bd)) + stat('Hours', fmt(n * 24)) + stat('Minutes', fmt(n * 1440));
+  }
+  function add() {
+    const s = parseD($('#xs').value), sign = +$('#xo').value, amt = Math.floor(num($('#xn'))), u = $('#xu').value, out = $('#xout'), sub = $('#xsub');
+    if (!s || Number.isNaN(amt)) { out.textContent = 'Pick a date and amount'; out.classList.add('err'); sub.textContent = ''; return; }
+    out.classList.remove('err');
+    const n = sign * amt; let r;
+    if (u === 'd') r = new Date(s.getFullYear(), s.getMonth(), s.getDate() + n);
+    else if (u === 'w') r = new Date(s.getFullYear(), s.getMonth(), s.getDate() + n * 7);
+    else if (u === 'm') r = addMonths(s, n);
+    else if (u === 'y') r = addMonths(s, n * 12);
+    else { r = new Date(s); let left = Math.abs(n); while (left > 0) { r.setDate(r.getDate() + sign); const w = r.getDay(); if (w !== 0 && w !== 6) left--; } }
+    out.textContent = longDate(r);
+    const dd = daysBetween(s, r);
+    sub.textContent = dd === 0 ? 'Same day' : `${plural(Math.abs(dd), 'calendar day')} ${dd > 0 ? 'after' : 'before'} ${shortDate(s)}`;
+  }
+  root.addEventListener('input', () => { diff(); add(); }); root.addEventListener('change', () => { diff(); add(); });
+  diff(); add();
+}
+
+/* ---------- 7. Time zones ---------- */
+const _tzf = {};
+const tzParts = (tz, ms) => { const f = _tzf[tz] ||= new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }); const p = {}; for (const x of f.formatToParts(new Date(ms))) p[x.type] = x.value; return p; };
+function tzOffset(tz, ms) { const p = tzParts(tz, ms); return Math.round((Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - ms) / 60000); }
+function wallToUTC(y, mo, d, h, mi, tz) {
+  const guess = Date.UTC(y, mo, d, h, mi), o1 = tzOffset(tz, guess); let t = guess - o1 * 6e4;
+  const o2 = tzOffset(tz, t); if (o2 !== o1) t = guess - o2 * 6e4; return t;
+}
+const offLabel = m => { const a = Math.abs(m); return `UTC${m >= 0 ? '+' : '−'}${Math.floor(a / 60)}${a % 60 ? ':' + pad(a % 60) : ''}`; };
+const diffLabel = m => { if (!m) return 'same time'; const a = Math.abs(m); return `${m > 0 ? '+' : '−'}${Math.floor(a / 60)}h${a % 60 ? ' ' + (a % 60) + 'm' : ''}`; };
+const city = z => z === 'UTC' ? 'UTC' : z.split('/').pop().replace(/_/g, ' ');
+function timezones(root) {
+  const local = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+  let all = []; try { all = Intl.supportedValuesOf('timeZone'); } catch (e) {}
+  if (!all.length) all = ['America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles', 'America/Anchorage', 'Pacific/Honolulu', 'America/Toronto', 'America/Mexico_City', 'America/Sao_Paulo', 'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Madrid', 'Europe/Rome', 'Europe/Moscow', 'Africa/Cairo', 'Africa/Lagos', 'Africa/Johannesburg', 'Asia/Dubai', 'Asia/Kolkata', 'Asia/Singapore', 'Asia/Shanghai', 'Asia/Hong_Kong', 'Asia/Tokyo', 'Asia/Seoul', 'Australia/Sydney', 'Pacific/Auckland'];
+  if (!all.includes('UTC')) all = ['UTC', ...all];
+  if (!all.includes(local)) all.push(local);
+  let targets = ['America/New_York', 'America/Chicago', 'America/Los_Angeles', 'Europe/London', 'Europe/Paris', 'Asia/Kolkata', 'Asia/Tokyo', 'Australia/Sydney'].filter(z => all.includes(z));
+  const opts = all.map(z => `<option value="${z}">${z.replace(/_/g, ' ')}</option>`).join('');
+  root.innerHTML = `<div class="panel">
+    <div class="grid2">
+      <div class="field"><label for="tt">Date &amp; time</label><input id="tt" type="datetime-local"></div>
+      <div class="field"><label for="tf">In time zone</label><select id="tf">${opts}</select></div>
+    </div>
+    <div class="tz-actions"><button type="button" class="btn ghost" id="tnow">Set to now</button><select id="tadd" aria-label="Add a time zone"><option value="">+ Add a time zone…</option>${opts}</select></div>
+    <div class="tz-list" id="tlist"></div>
+  </div>`;
+  const tf = $('#tf'), tt = $('#tt'); tf.value = local;
+  const setNow = () => { const p = tzParts(tf.value, Date.now()); tt.value = `${p.year}-${p.month}-${p.day}T${pad(+p.hour % 24)}:${p.minute}`; };
+  const timeF = {}, dateF = {};
+  function draw() {
+    const v = tt.value; if (!v) { $('#tlist').innerHTML = '<div class="tz-row"><span class="muted">Pick a date and time.</span></div>'; return; }
+    const [dp, tp] = v.split('T'); const [y, mo, d] = dp.split('-').map(Number); const [h, mi] = tp.split(':').map(Number);
+    const from = tf.value, t = wallToUTC(y, mo - 1, d, h, mi, from), offF = tzOffset(from, t);
+    const dayOf = z => { const p = tzParts(z, t); return Date.UTC(+p.year, +p.month - 1, +p.day); }, fromDay = dayOf(from);
+    const list = [from, ...targets.filter(z => z !== from)];
+    $('#tlist').innerHTML = list.map(z => {
+      const off = tzOffset(z, t), dd = Math.round((dayOf(z) - fromDay) / 864e5);
+      const tfmt = timeF[z] ||= new Intl.DateTimeFormat('en-US', { timeZone: z, hour: 'numeric', minute: '2-digit' });
+      const dfmt = dateF[z] ||= new Intl.DateTimeFormat('en-US', { timeZone: z, weekday: 'short', month: 'short', day: 'numeric' });
+      return `<div class="tz-row ${z === from ? 'src' : ''}">
+        <div><div>${city(z)} ${z === from ? '<span class="tag">(selected)</span>' : ''}</div><div class="muted small">${z.replace(/_/g, ' ')} · ${offLabel(off)}</div></div>
+        <div class="tz-right"><div class="tz-time">${tfmt.format(t)}</div><div class="muted small">${dfmt.format(t)}${dd ? ` (${dd > 0 ? 'next day' : 'previous day'})` : ''} · ${diffLabel(off - offF)}</div></div>
+        ${z === from ? '<span></span>' : `<button type="button" class="icon-btn tdel" data-z="${z}" aria-label="Remove ${city(z)}">×</button>`}
+      </div>`;
+    }).join('');
+  }
+  $('#tnow').addEventListener('click', () => { setNow(); draw(); });
+  $('#tadd').addEventListener('change', e => { const z = e.target.value; if (z && !targets.includes(z)) targets.push(z); e.target.value = ''; draw(); });
+  $('#tlist').addEventListener('click', e => { const b = e.target.closest('.tdel'); if (b) { targets = targets.filter(z => z !== b.dataset.z); draw(); } });
+  tt.addEventListener('input', draw); tf.addEventListener('change', draw);
+  setNow(); draw();
+}
+
+/* ---------- 8. GPA ---------- */
+const GRADES = [['A+', 4.0], ['A', 4.0], ['A−', 3.7], ['B+', 3.3], ['B', 3.0], ['B−', 2.7], ['C+', 2.3], ['C', 2.0], ['C−', 1.7], ['D+', 1.3], ['D', 1.0], ['D−', 0.7], ['F', 0]];
+const GP = Object.fromEntries(GRADES);
+function gpa(root) {
+  const rows = [{ name: '', cr: 3, g: 'A', t: 0 }, { name: '', cr: 3, g: 'B+', t: 0 }, { name: '', cr: 4, g: 'A−', t: 0 }, { name: '', cr: 3, g: 'B', t: 0 }];
+  root.innerHTML = `<div class="panel">
+    <div class="gpa-row gpa-head"><span>Course</span><span>Credits</span><span>Grade</span><span>Level</span><span></span></div>
+    <div id="grows"></div>
+    <button type="button" class="btn ghost" id="gadd">+ Add course</button>
+    <div class="result"><div class="k">Semester GPA</div><div class="big" id="gout"></div><div class="stats" id="gstats"></div></div>
+    <h3 class="sec">Cumulative GPA <span class="muted small">(optional)</span></h3>
+    <div class="grid2">
+      <div class="field"><label for="pg">Current GPA</label><input id="pg" type="number" step="0.01" min="0" max="5" inputmode="decimal" placeholder="e.g. 3.45"></div>
+      <div class="field"><label for="pc">Credits already completed</label><input id="pc" type="number" step="1" min="0" inputmode="numeric" placeholder="e.g. 60"></div>
+    </div>
+    <p class="muted small">Uses the common 4.0 scale. Honors adds 0.5 and AP/IB adds 1.0 to the weighted GPA (not for F grades).</p>
+  </div>`;
+  function drawRows() {
+    $('#grows').innerHTML = rows.map((r, i) => `<div class="gpa-row" data-i="${i}">
+      <input class="gname" aria-label="Course name" placeholder="Course ${i + 1}" value="${esc(r.name)}">
+      <input class="gcr" type="number" min="0" step="0.5" inputmode="decimal" aria-label="Credits" value="${r.cr}">
+      <select class="gg" aria-label="Grade">${GRADES.map(([g, p]) => `<option value="${g}" ${g === r.g ? 'selected' : ''}>${g} · ${p.toFixed(1)}</option>`).join('')}</select>
+      <select class="gt" aria-label="Course level"><option value="0">Regular</option><option value="0.5">Honors</option><option value="1">AP / IB</option></select>
+      <button type="button" class="icon-btn gdel" aria-label="Remove course" title="Remove">×</button>
+    </div>`).join('');
+    $$('.gt', root).forEach((s, i) => { s.value = String(rows[i].t); });
+    calc();
+  }
+  function calc() {
+    let cr = 0, qp = 0, wqp = 0, weighted = false;
+    for (const r of rows) { if (!(r.cr > 0)) continue; const p = GP[r.g]; cr += r.cr; qp += p * r.cr; wqp += (p > 0 ? p + r.t : 0) * r.cr; if (r.t) weighted = true; }
+    const out = $('#gout');
+    if (!cr) { out.textContent = '—'; $('#gstats').innerHTML = stat('Credits', '0'); return; }
+    out.textContent = (qp / cr).toFixed(2);
+    let s = stat('Credits', fmt(cr)) + stat('Quality points', fmt(qp, 2));
+    if (weighted) s += stat('Weighted GPA', (wqp / cr).toFixed(2));
+    const pg = num($('#pg')), pc = num($('#pc'));
+    if (!Number.isNaN(pg) && pc > 0) s += stat('Cumulative GPA', ((pg * pc + qp) / (pc + cr)).toFixed(2)) + stat('Total credits', fmt(pc + cr));
+    $('#gstats').innerHTML = s;
+  }
+  $('#grows').addEventListener('input', e => {
+    const row = e.target.closest('.gpa-row'); if (!row) return; const r = rows[+row.dataset.i];
+    if (e.target.classList.contains('gname')) r.name = e.target.value;
+    else if (e.target.classList.contains('gcr')) r.cr = num(e.target);
+    else if (e.target.classList.contains('gg')) r.g = e.target.value;
+    else if (e.target.classList.contains('gt')) r.t = +e.target.value;
+    calc();
+  });
+  $('#grows').addEventListener('click', e => { const b = e.target.closest('.gdel'); if (!b) return; rows.splice(+b.closest('.gpa-row').dataset.i, 1); drawRows(); });
+  $('#gadd').addEventListener('click', () => { rows.push({ name: '', cr: 3, g: 'A', t: 0 }); drawRows(); const n = $$('.gname', root); n[n.length - 1].focus(); });
+  $('#pg').addEventListener('input', calc); $('#pc').addEventListener('input', calc);
+  drawRows();
+}
+
+/* ---------- 9. Fuel ---------- */
+function fuel(root) {
+  let sys = 'us';
+  root.innerHTML = `<div class="panel">
+    <div class="pills"><button type="button" class="pill on" data-s="us">US (miles, MPG)</button><button type="button" class="pill" data-s="metric">Metric (km, L/100 km)</button></div>
+    <div class="grid2">
+      <div class="field"><label for="fd" id="fdl">Trip distance (miles)</label><input id="fd" type="number" step="any" min="0" inputmode="decimal" value="250"></div>
+      <div class="field"><label for="fe" id="fel">Fuel economy (MPG)</label><input id="fe" type="number" step="any" min="0" inputmode="decimal" value="28"></div>
+      <div class="field"><label for="fp" id="fpl">Fuel price (per gallon)</label><div class="money"><select id="fc" aria-label="Currency"><option>$</option><option>€</option><option>£</option><option>¥</option><option>₹</option><option>C$</option><option>A$</option></select><input id="fp" type="number" step="0.01" min="0" inputmode="decimal" value="3.25"></div></div>
+      <div class="field"><label for="fn">People splitting the cost</label><input id="fn" type="number" step="1" min="1" inputmode="numeric" value="1"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="fr"> Round trip (double the distance)</label>
+    <div class="result"><div class="k">Fuel cost</div><div class="big" id="fout"></div><div class="stats" id="fstats"></div></div>
+  </div>`;
+  const G = 3.785411784, K = 1.609344;
+  function labels() {
+    $('#fdl').textContent = `Trip distance (${sys === 'us' ? 'miles' : 'km'})`;
+    $('#fel').textContent = sys === 'us' ? 'Fuel economy (MPG)' : 'Fuel consumption (L/100 km)';
+    $('#fpl').textContent = `Fuel price (per ${sys === 'us' ? 'gallon' : 'liter'})`;
+    $$('.pill', root).forEach(p => p.classList.toggle('on', p.dataset.s === sys));
+  }
+  function calc() {
+    const dist = num($('#fd')) * ($('#fr').checked ? 2 : 1), eff = num($('#fe')), price = num($('#fp')), ppl = Math.max(1, Math.floor(num($('#fn')) || 1)), cur = $('#fc').value, out = $('#fout');
+    if ([dist, eff, price].some(Number.isNaN) || eff <= 0) { out.textContent = 'Fill in distance, economy and price'; out.classList.add('err'); $('#fstats').innerHTML = ''; return; }
+    out.classList.remove('err');
+    const fuelAmt = sys === 'us' ? dist / eff : dist * eff / 100, cost = fuelAmt * price;
+    const money = v => cur + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    out.textContent = money(cost);
+    const u = sys === 'us' ? ['mi', 'gal'] : ['km', 'L'];
+    $('#fstats').innerHTML = stat('Fuel needed', `${fmt(fuelAmt, 2)} ${u[1]}`) + stat('Total distance', `${fmt(dist, 1)} ${u[0]}`) +
+      (ppl > 1 ? stat('Per person', money(cost / ppl)) : '') + stat(`Cost per ${u[0]}`, dist > 0 ? money(cost / dist) : '—');
+  }
+  $('.pills', root).addEventListener('click', e => {
+    const b = e.target.closest('.pill'); if (!b || b.dataset.s === sys) return;
+    const d = num($('#fd')), ef = num($('#fe')), p = num($('#fp')), r2 = (v, n) => Number.isNaN(v) ? '' : +v.toFixed(n);
+    if (b.dataset.s === 'metric') { $('#fd').value = r2(d * K, 1); $('#fe').value = r2(235.214583 / ef, 2); $('#fp').value = r2(p / G, 3); }
+    else { $('#fd').value = r2(d / K, 1); $('#fe').value = r2(235.214583 / ef, 1); $('#fp').value = r2(p * G, 2); }
+    sys = b.dataset.s; labels(); calc();
+  });
+  root.addEventListener('input', calc); root.addEventListener('change', calc);
+  labels(); calc();
+}
+
+/* ---------- theme + boot ---------- */
+addEventListener('hashchange', route);
+route();
+</script>
+<script type="module" src="./Mathkit - Online Calculator_files/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;11b61391ca2348f7b704100f5f1f001f&quot;,&quot;r&quot;:1,&quot;spa&quot;:2}" crossorigin="anonymous"></script>
+
+
+</body></html>
